@@ -11,7 +11,7 @@ class Gap {
   static Widget vMedium = const SizedBox(
     height: AppSizes.x3,
   );
-  static Widget get = const SizedBox(
+  static Widget vLarge = const SizedBox(
     height: AppSizes.x5,
   );
 
