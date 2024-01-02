@@ -1,7 +1,6 @@
 import 'package:injectable/injectable.dart';
 import 'package:money_lover_clone/features/auth/auth.dart';
 import 'package:money_lover_clone/features/common/common.dart';
-import 'package:money_lover_clone/features/common/domain/models/failure.dart';
 
 @LazySingleton(as: AuthService)
 class FirebaseAuthService implements AuthService {

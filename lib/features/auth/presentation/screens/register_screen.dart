@@ -1,9 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:money_lover_clone/features/auth/auth.dart';
 import 'package:money_lover_clone/features/common/common.dart';
+import 'package:money_lover_clone/service_locator/service_locator.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final AuthBloc _authBloc = getIt.get<AuthBloc>();
+
+  final TextEditingController _nameCtrlr = TextEditingController();
+  final TextEditingController _emailCtrlr = TextEditingController();
+  final TextEditingController _phoneCtrlr = TextEditingController();
+  final TextEditingController _passwordCtrlr = TextEditingController();
+  final TextEditingController _passwordConfirmCtrlr = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameCtrlr.dispose();
+    _emailCtrlr.dispose();
+    _phoneCtrlr.dispose();
+    _passwordCtrlr.dispose();
+    _passwordConfirmCtrlr.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,32 +49,47 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 Gap.vLarge,
                 Gap.vLarge,
-                const _InputText(
+                _InputText(
+                  controller: _nameCtrlr,
                   hintText: "Nama",
                   textCapitalization: TextCapitalization.words,
                   keyboardType: TextInputType.text,
                 ),
                 Gap.vLarge,
-                const _InputText(
+                _InputText(
+                  controller: _emailCtrlr,
                   hintText: "Email",
                   keyboardType: TextInputType.emailAddress,
                 ),
                 Gap.vLarge,
-                const _InputText(
+                _InputText(
+                  controller: _phoneCtrlr,
                   hintText: "No telepon",
                   keyboardType: TextInputType.phone,
                 ),
                 Gap.vLarge,
-                const _InputPassword(hintText: "Kata sandi"),
+                _InputPassword(
+                  controller: _passwordCtrlr,
+                  hintText: "Kata sandi",
+                ),
                 Gap.vLarge,
-                const _InputPassword(
+                _InputPassword(
+                  controller: _passwordConfirmCtrlr,
                   hintText: "Konfirmasi kata sandi",
                 ),
                 Gap.vLarge,
                 Gap.vLarge,
                 RegisterButton(
+                  authBloc: _authBloc,
                   onPressed: () {
-                    // TODO : register logic
+                    _authBloc.add(
+                      Register(
+                        name: _nameCtrlr.text,
+                        email: _emailCtrlr.text,
+                        phone: _phoneCtrlr.text,
+                        password: _passwordCtrlr.text,
+                      ),
+                    );
                   },
                 ),
                 Gap.vLarge,
@@ -88,6 +127,7 @@ class _InputText extends StatelessWidget {
   final TextCapitalization _textCapitalization;
   final bool _obsecure;
   final Widget? _suffix;
+  final TextEditingController _controller;
   const _InputText({
     Key? key,
     String? Function(String?)? validator,
@@ -96,13 +136,15 @@ class _InputText extends StatelessWidget {
     TextCapitalization textCapitalization = TextCapitalization.none,
     bool obsecure = false,
     Widget? suffix,
+    required TextEditingController controller,
   })  : _hintText = hintText,
         _key = key,
         _validator = validator,
         _keyboardType = keyboardType,
         _textCapitalization = textCapitalization,
         _obsecure = obsecure,
-        _suffix = suffix;
+        _suffix = suffix,
+        _controller = controller;
 
   @override
   Widget build(BuildContext context) {
@@ -119,6 +161,7 @@ class _InputText extends StatelessWidget {
         keyboardType: _keyboardType,
         textCapitalization: _textCapitalization,
         obscureText: _obsecure,
+        controller: _controller,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: _hintText,
@@ -135,11 +178,14 @@ class _InputText extends StatelessWidget {
 class _InputPassword extends StatefulWidget {
   final Key? _key;
   final String? _hintText;
+  final TextEditingController _controller;
   const _InputPassword({
     Key? key,
     String? hintText,
+    required TextEditingController controller,
   })  : _hintText = hintText,
-        _key = key;
+        _key = key,
+        _controller = controller;
 
   @override
   State<_InputPassword> createState() => __InputPasswordState();
@@ -152,6 +198,7 @@ class __InputPasswordState extends State<_InputPassword> {
   Widget build(BuildContext context) {
     return _InputText(
       key: widget._key,
+      controller: widget._controller,
       hintText: widget._hintText,
       obsecure: obsecure,
       suffix: GestureDetector(
