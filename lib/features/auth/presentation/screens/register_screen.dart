@@ -32,87 +32,93 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: AppPaddings.large,
-            child: Column(
-              children: [
-                const Center(
-                  child: Text(
-                    "Daftar",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Gap.vLarge,
-                Gap.vLarge,
-                _InputText(
-                  controller: _nameCtrlr,
-                  hintText: "Nama",
-                  textCapitalization: TextCapitalization.words,
-                  keyboardType: TextInputType.text,
-                ),
-                Gap.vLarge,
-                _InputText(
-                  controller: _emailCtrlr,
-                  hintText: "Email",
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                Gap.vLarge,
-                _InputText(
-                  controller: _phoneCtrlr,
-                  hintText: "No telepon",
-                  keyboardType: TextInputType.phone,
-                ),
-                Gap.vLarge,
-                _InputPassword(
-                  controller: _passwordCtrlr,
-                  hintText: "Kata sandi",
-                ),
-                Gap.vLarge,
-                _InputPassword(
-                  controller: _passwordConfirmCtrlr,
-                  hintText: "Konfirmasi kata sandi",
-                ),
-                Gap.vLarge,
-                Gap.vLarge,
-                RegisterButton(
-                  authBloc: _authBloc,
-                  onPressed: () {
-                    _authBloc.add(
-                      Register(
-                        name: _nameCtrlr.text,
-                        email: _emailCtrlr.text,
-                        phone: _phoneCtrlr.text,
-                        password: _passwordCtrlr.text,
-                      ),
-                    );
-                  },
-                ),
-                Gap.vLarge,
-                Wrap(
-                  runAlignment: WrapAlignment.center,
+      body: Padding(
+        padding: AppPaddings.large,
+        child: Column(
+          children: [
+            Flexible(
+              child: SingleChildScrollView(
+                child: Column(
                   children: [
-                    const Text("Sudah punya akun ?"),
-                    Gap.hSmall,
-                    GestureDetector(
-                      onTap: () {},
-                      child: const Text(
-                        "Login di sini",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primary500,
+                    const SafeArea(
+                      child: Center(
+                        child: Text(
+                          "Daftar",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
+                    Gap.vLarge,
+                    Gap.vLarge,
+                    _InputText(
+                      controller: _nameCtrlr,
+                      hintText: "Nama",
+                      textCapitalization: TextCapitalization.words,
+                      keyboardType: TextInputType.text,
+                    ),
+                    Gap.vLarge,
+                    _InputText(
+                      controller: _emailCtrlr,
+                      hintText: "Email",
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    Gap.vLarge,
+                    _InputText(
+                      controller: _phoneCtrlr,
+                      hintText: "No telepon",
+                      keyboardType: TextInputType.phone,
+                    ),
+                    Gap.vLarge,
+                    _InputPassword(
+                      controller: _passwordCtrlr,
+                      hintText: "Kata sandi",
+                    ),
+                    Gap.vLarge,
+                    _InputPassword(
+                      controller: _passwordConfirmCtrlr,
+                      hintText: "Konfirmasi kata sandi",
+                    ),
+                    Gap.vLarge,
                   ],
-                )
-              ],
+                ),
+              ),
             ),
-          ),
+            Gap.vLarge,
+            RegisterButton(
+              authBloc: _authBloc,
+              onPressed: () {
+                _authBloc.add(
+                  Register(
+                    name: _nameCtrlr.text,
+                    email: _emailCtrlr.text,
+                    phone: _phoneCtrlr.text,
+                    password: _passwordCtrlr.text,
+                  ),
+                );
+              },
+            ),
+            Gap.vLarge,
+            Wrap(
+              runAlignment: WrapAlignment.center,
+              children: [
+                const Text("Sudah punya akun ?"),
+                Gap.hSmall,
+                GestureDetector(
+                  onTap: () {},
+                  child: const Text(
+                    "Login di sini",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primary500,
+                    ),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
