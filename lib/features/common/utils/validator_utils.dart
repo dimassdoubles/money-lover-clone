@@ -22,7 +22,7 @@ class ValidatorUtils {
   }
 
   static (bool, String?) checkPhone(String? value) {
-    final RegExp phoneRegex = RegExp(r'^\+?[1-9]\d{1,14}$');
+    final RegExp phoneRegex = RegExp(r'^\+?[0-9]\d{0,14}$');
 
     return (phoneRegex.hasMatch(value ?? ""), "No telepon tidak valid");
   }

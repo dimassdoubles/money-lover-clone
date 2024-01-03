@@ -101,7 +101,12 @@ class _LoginScreenState extends State<LoginScreen> {
               LoginButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // TODO add logic login
+                    _authBloc.add(
+                      Login(
+                        email: _emailCtrlr.text,
+                        password: _passwordCtrlr.text,
+                      ),
+                    );
                   }
                 },
                 authBloc: _authBloc,

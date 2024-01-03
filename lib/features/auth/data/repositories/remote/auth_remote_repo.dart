@@ -7,4 +7,9 @@ abstract class AuthRemoteRepo {
     required String phone,
     required String password,
   });
+
+  Future<AppUser> loginWithEmail({
+    required String email,
+    required String password,
+  });
 }

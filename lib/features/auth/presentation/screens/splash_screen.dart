@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
         future: checkAuthState(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return const RegisterScreen();
+            return const LoginScreen();
           }
 
           return const Center(

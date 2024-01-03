@@ -13,3 +13,13 @@ class Register extends AuthEvent {
     required this.password,
   });
 }
+
+class Login extends AuthEvent {
+  final String email;
+  final String password;
+
+  Login({
+    required this.email,
+    required this.password,
+  });
+}

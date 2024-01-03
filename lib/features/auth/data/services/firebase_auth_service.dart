@@ -17,8 +17,13 @@ class FirebaseAuthService implements AuthService {
   Future<(AppUser?, Failure?)> loginWithEmail({
     required String email,
     required String password,
-  }) {
-    return Future(() => const (null, Failure()));
+  }) async {
+    return await ServiceUtils.handleFailure<AppUser>(() async {
+      return _remoteRepo.loginWithEmail(
+        email: email,
+        password: password,
+      );
+    });
   }
 
   @override

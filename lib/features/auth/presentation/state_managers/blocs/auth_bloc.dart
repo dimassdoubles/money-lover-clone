@@ -30,5 +30,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }
       },
     );
+
+    on<Login>(
+      (event, emit) async {
+        emit(Loading());
+
+        final (result, err) = await _authService.loginWithEmail(
+          email: event.email,
+          password: event.password,
+        );
+
+        if (err != null) {
+          emit(Error(err));
+        } else {
+          emit(Success(appUser: result));
+        }
+      },
+    );
   }
 }

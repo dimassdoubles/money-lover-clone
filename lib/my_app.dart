@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(builder: (context, child) {
       return const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: auth.RegisterScreen(),
+        home: auth.LoginScreen(),
       );
     });
   }

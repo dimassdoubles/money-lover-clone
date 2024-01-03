@@ -27,7 +27,8 @@ class FirebaseAuthRepo implements AuthRemoteRepo {
       // menyimpan informasi user di firebase firestore
       CollectionReference users = _firestore.collection(collectionName);
       users
-          .add(
+          .doc(userCredential.user!.uid)
+          .set(
             {
               "name": name,
               "email": email,
@@ -52,6 +53,38 @@ class FirebaseAuthRepo implements AuthRemoteRepo {
       rethrow;
     } catch (e) {
       debugPrint("$e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<AppUser> loginWithEmail({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      // cari data profil user
+      CollectionReference users = _firestore.collection(collectionName);
+      final data =
+          await users.doc(credential.user!.uid).get() as Map<String, dynamic>;
+
+      return AppUser(
+        id: credential.user!.uid,
+        name: data["name"],
+        phone: data["phone"],
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        debugPrint('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        debugPrint('Wrong password provided for that user.');
+      }
+
+      rethrow;
+    } catch (e) {
       rethrow;
     }
   }
