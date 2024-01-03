@@ -3,31 +3,25 @@ import 'package:money_lover_clone/features/auth/auth.dart';
 import 'package:money_lover_clone/features/common/common.dart';
 import 'package:money_lover_clone/service_locator/service_locator.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<RegisterScreen> createState() => _RegisterScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final AuthBloc _authBloc = getIt.get<AuthBloc>();
 
-  final TextEditingController _nameCtrlr = TextEditingController();
   final TextEditingController _emailCtrlr = TextEditingController();
-  final TextEditingController _phoneCtrlr = TextEditingController();
   final TextEditingController _passwordCtrlr = TextEditingController();
-  final TextEditingController _passwordConfirmCtrlr = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
-    _nameCtrlr.dispose();
     _emailCtrlr.dispose();
-    _phoneCtrlr.dispose();
     _passwordCtrlr.dispose();
-    _passwordConfirmCtrlr.dispose();
     super.dispose();
   }
 
@@ -47,7 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const SafeArea(
                         child: Center(
                           child: Text(
-                            "Daftar",
+                            "Masuk",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -56,26 +50,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ),
                       Gap.vLarge,
-                      Gap.vLarge,
-                      _InputText(
-                        controller: _nameCtrlr,
-                        hintText: "Nama",
-                        textCapitalization: TextCapitalization.words,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          final (isEmpty, messageEmpty) =
-                              ValidatorUtils.checkEmpty(
-                            value,
-                            fieldName: "Nama",
-                          );
-
-                          if (isEmpty) {
-                            return messageEmpty;
-                          }
-
-                          return null;
-                        },
-                      ),
                       Gap.vLarge,
                       _InputText(
                         controller: _emailCtrlr,
@@ -101,30 +75,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       Gap.vLarge,
-                      _InputText(
-                        controller: _phoneCtrlr,
-                        hintText: "No telepon",
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          final (isEmpty, messageEmpty) =
-                              ValidatorUtils.checkEmpty(
-                            value,
-                            fieldName: "No telepon",
-                          );
-
-                          final (isPhone, messagePhone) =
-                              ValidatorUtils.checkPhone(value);
-
-                          if (isEmpty) {
-                            return messageEmpty;
-                          } else if (!isPhone) {
-                            return messagePhone;
-                          }
-
-                          return null;
-                        },
-                      ),
-                      Gap.vLarge,
                       _InputPassword(
                         controller: _passwordCtrlr,
                         hintText: "Kata sandi",
@@ -143,63 +93,36 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         },
                       ),
                       Gap.vLarge,
-                      _InputPassword(
-                          controller: _passwordConfirmCtrlr,
-                          hintText: "Konfirmasi kata sandi",
-                          validator: (value) {
-                            final (isEmpty, messageEmpty) =
-                                ValidatorUtils.checkEmpty(
-                              value,
-                              fieldName: "Kata sandi konfirmasi",
-                            );
-
-                            if (isEmpty) {
-                              return messageEmpty;
-                            } else if (_passwordConfirmCtrlr.text !=
-                                _passwordCtrlr.text) {
-                              return "Kata sandi konfirmasi tidak sesuai";
-                            }
-
-                            return null;
-                          }),
-                      Gap.vLarge,
                     ],
                   ),
                 ),
               ),
               Gap.vLarge,
-              RegisterButton(
-                authBloc: _authBloc,
+              LoginButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    _authBloc.add(
-                      Register(
-                        name: _nameCtrlr.text,
-                        email: _emailCtrlr.text,
-                        phone: _phoneCtrlr.text,
-                        password: _passwordCtrlr.text,
-                      ),
-                    );
+                    // TODO add logic login
                   }
                 },
+                authBloc: _authBloc,
               ),
               Gap.vLarge,
               Wrap(
                 runAlignment: WrapAlignment.center,
                 children: [
-                  const Text("Sudah punya akun ?"),
+                  const Text("Belum punya akun ?"),
                   Gap.hSmall,
                   GestureDetector(
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginScreen(),
+                          builder: (context) => const RegisterScreen(),
                         ),
                       );
                     },
                     child: const Text(
-                      "Login di sini",
+                      "Daftar di sini",
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
                         color: AppColors.primary500,
