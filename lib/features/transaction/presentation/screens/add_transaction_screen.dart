@@ -1,9 +1,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:money_lover_clone/features/common/common.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
+import 'package:money_lover_clone/service_locator/service_locator.dart';
 
 class AddTransactionScreen extends StatefulWidget {
   const AddTransactionScreen({super.key});
@@ -16,9 +16,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final TextEditingController _amountCtrlr = TextEditingController(text: "0");
   final TextEditingController _categoryCtrlr = TextEditingController();
   final TextEditingController _dateCtrlr = TextEditingController();
+  final TextEditingController _descCtrlr = TextEditingController();
 
   final FocusNode _amountFocus = FocusNode();
 
+  final TransactionBloc _transactionBloc = getIt.get<TransactionBloc>();
+
+  int? amount;
   TransactionCategory? transactionCategory;
   DateTime dateTime = DateTime.now();
   File? imageFile;
@@ -41,6 +45,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     _amountFocus.dispose();
     _categoryCtrlr.dispose();
     _dateCtrlr.dispose();
+    _descCtrlr.dispose();
     super.dispose();
   }
 
@@ -127,11 +132,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       ),
                     ),
                     Gap.vLarge,
-                    const TextField(
+                    TextField(
+                      controller: _descCtrlr,
                       maxLength: 150,
                       maxLines: 5,
                       minLines: 1,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Keterangan",
                         hintStyle: TextStyle(
                           color: AppColors.neutral200,
@@ -242,34 +248,20 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               ),
             ),
           ),
-          Container(
-            padding: AppPaddings.large,
-            child: ElevatedButton(
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary500,
-                foregroundColor: AppColors.neutral100,
-                elevation: 0,
-              ),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: AppSizes.x3),
-                width: 1.sw,
-                child: const Text(
-                  "Simpan",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-            ),
+          SaveNewTransactionButton(
+            amount: amount,
+            transactionCategory: transactionCategory,
+            transactionBloc: _transactionBloc,
+            dateTime: dateTime,
+            descCtrlr: _descCtrlr,
+            imageFile: imageFile,
           ),
           if (_amountFocus.hasFocus)
             Calculator(
               controller: _amountCtrlr,
-              onValueChanged: (amount) {},
+              onValueChanged: (value) {
+                amount = value;
+              },
             ),
         ],
       ),

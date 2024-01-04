@@ -40,9 +40,7 @@ class _CalculatorState extends State<Calculator> {
     }
 
     _setDisplayText();
-    debugPrint("number1 $number1");
-    debugPrint("number2 $number2");
-    widget._onValueChanged?.call(0);
+    widget._onValueChanged?.call(number1 ?? 0);
   }
 
   void _selectOperator(_Operator selected) {
@@ -82,6 +80,8 @@ class _CalculatorState extends State<Calculator> {
       operator = null;
       _setDisplayText();
     });
+
+    widget._onValueChanged?.call(number1 ?? 0);
   }
 
   void _clear() {
@@ -93,6 +93,8 @@ class _CalculatorState extends State<Calculator> {
     setState(() {
       _setDisplayText();
     });
+
+    widget._onValueChanged?.call(0);
   }
 
   void _delete() {
@@ -122,6 +124,7 @@ class _CalculatorState extends State<Calculator> {
     }
 
     _setDisplayText();
+    widget._onValueChanged?.call(number1 ?? 0);
   }
 
   void _setDisplayText() {

@@ -14,4 +14,8 @@ class ShowUtils {
   static void showError(String message) {
     EasyLoading.showError(message);
   }
+
+  static void showSuccess(String message) {
+    EasyLoading.showSuccess(message);
+  }
 }
