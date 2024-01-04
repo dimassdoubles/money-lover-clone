@@ -65,11 +65,13 @@ class FirebaseAuthRepo implements AuthRemoteRepo {
     try {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      debugPrint("repo disini brooo");
 
       // cari data profil user
       CollectionReference users = _firestore.collection(collectionName);
-      final data =
-          await users.doc(credential.user!.uid).get() as Map<String, dynamic>;
+      debugPrint("repo disini brooo 3");
+      final data = await users.doc(credential.user!.uid).get();
+      debugPrint("repo disini broo 2");
 
       return AppUser(
         id: credential.user!.uid,
@@ -85,6 +87,7 @@ class FirebaseAuthRepo implements AuthRemoteRepo {
 
       rethrow;
     } catch (e) {
+      debugPrint("$e");
       rethrow;
     }
   }

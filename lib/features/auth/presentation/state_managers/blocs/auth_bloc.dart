@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:money_lover_clone/features/auth/auth.dart';
+import 'package:money_lover_clone/features/common/common.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -33,6 +34,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     on<Login>(
       (event, emit) async {
+        ShowUtils.showLoading();
         emit(Loading());
 
         final (result, err) = await _authService.loginWithEmail(
@@ -40,7 +42,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           password: event.password,
         );
 
+        ShowUtils.dismissLoading();
         if (err != null) {
+          ShowUtils.showError(err.message);
           emit(Error(err));
         } else {
           emit(Success(appUser: result));

@@ -3,9 +3,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: unused_import
 import 'package:money_lover_clone/features/auth/auth.dart' as auth;
+import 'package:money_lover_clone/features/auth/presentation/presentation.dart';
 // ignore: unused_import
 import 'package:money_lover_clone/features/common/common.dart';
-import 'package:money_lover_clone/features/transaction/presentation/screens/add_transaction_screen.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: const AddTransactionScreen(),
+          home: const LoginScreen(),
           builder: EasyLoading.init(),
         );
       },

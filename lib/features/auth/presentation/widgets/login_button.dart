@@ -19,7 +19,10 @@ class LoginButton extends StatelessWidget {
     return BlocListener(
       bloc: _authBloc,
       listener: (context, state) {
+        debugPrint("Sampai sini brayy");
+        debugPrint("${state.runtimeType}");
         if (state is Success) {
+          debugPrint("Sukses login gan");
           Navigator.push(
             context,
             MaterialPageRoute(
