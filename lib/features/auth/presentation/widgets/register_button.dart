@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:money_lover_clone/features/auth/auth.dart';
 import 'package:money_lover_clone/features/common/common.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:money_lover_clone/features/dashboard/presentation/screens/dashboard_screen.dart';
 
 class RegisterButton extends StatelessWidget {
   final void Function()? _onPressed;
@@ -23,9 +24,7 @@ class RegisterButton extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const UnimplementedScreen(
-                title: "Dashboard",
-              ),
+              builder: (context) => const DashboardScreen(),
             ),
           );
         }
