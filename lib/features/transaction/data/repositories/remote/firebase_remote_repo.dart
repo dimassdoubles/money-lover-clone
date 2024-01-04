@@ -54,6 +54,8 @@ class FirebaseRemoteRepo implements TransactionRemoteRepo {
               "categoryType": category.type.name,
               "description": description ?? "",
               "image": downloadUrl,
+              "dateTime": dateTime.toString(),
+              "userId": _auth.currentUser!.uid,
             },
           )
           .then((value) => debugPrint("transaction added"))
