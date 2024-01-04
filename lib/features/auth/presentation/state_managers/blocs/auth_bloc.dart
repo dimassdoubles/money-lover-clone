@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:money_lover_clone/features/auth/auth.dart';
 import 'package:money_lover_clone/features/common/common.dart';
+import 'package:money_lover_clone/service_locator/service_locator.dart';
 
 @injectable
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
@@ -47,6 +48,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           ShowUtils.showError(err.message);
           emit(Error(err));
         } else {
+          final userCubit = getIt.get<AppUserCubit>();
+          userCubit.set(result!);
           emit(Success(appUser: result));
         }
       },

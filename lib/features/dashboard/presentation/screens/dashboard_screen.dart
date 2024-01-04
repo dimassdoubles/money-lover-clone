@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:money_lover_clone/features/auth/auth.dart' as auth;
+import 'package:money_lover_clone/features/auth/presentation/presentation.dart';
 import 'package:money_lover_clone/features/common/common.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart'
     as transaction;
@@ -15,6 +17,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final _transactionBloc = getIt.get<transaction.TransactionBloc>();
+  final _userCubit = getIt.get<auth.AppUserCubit>();
 
   @override
   void initState() {
@@ -47,37 +50,76 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: AppPaddings.large,
-          child: BlocBuilder<transaction.TransactionBloc,
-              transaction.TransactionState>(
-            bloc: _transactionBloc,
-            builder: (context, state) {
-              if (state is transaction.Success) {
-                final saldoPlus = state.transactionList!
-                    .where((element) =>
-                        element.category.type ==
-                        transaction.TransactionType.income)
-                    .map(
-                      (e) => e.amount,
-                    )
-                    .toList()
-                    .reduce((value, element) => value + element);
-                final saldoMinus = state.transactionList!
-                    .where((element) =>
-                        element.category.type ==
-                        transaction.TransactionType.expense)
-                    .map(
-                      (e) => e.amount,
-                    )
-                    .toList()
-                    .reduce((value, element) => value + element);
+        child: BlocBuilder<transaction.TransactionBloc,
+            transaction.TransactionState>(
+          bloc: _transactionBloc,
+          builder: (context, state) {
+            if (state is transaction.Success) {
+              final saldoPlusList = state.transactionList!
+                  .where((element) =>
+                      element.category.type ==
+                      transaction.TransactionType.income)
+                  .map(
+                    (e) => e.amount,
+                  )
+                  .toList();
+              int saldoPlus = 0;
+              for (final amount in saldoPlusList) {
+                saldoPlus += amount;
+              }
 
-                return Column(
+              final saldoMinusList = state.transactionList!
+                  .where((element) =>
+                      element.category.type ==
+                      transaction.TransactionType.expense)
+                  .map(
+                    (e) => e.amount,
+                  )
+                  .toList();
+
+              int saldoMinus = 0;
+              for (final amount in saldoMinusList) {
+                saldoMinus += amount;
+              }
+
+              return Padding(
+                padding: AppPaddings.large,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SafeArea(
-                      child: Text("Hallo, Dimas"),
+                    SafeArea(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Hallo,"),
+                                Text(
+                                  _userCubit.state!.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginScreen(),
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Gap.vLarge,
                     Container(
@@ -127,11 +169,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ),
                     ),
                   ],
-                );
-              }
-              return const SizedBox.shrink();
-            },
-          ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
         ),
       ),
     );
