@@ -12,10 +12,22 @@ class AddTransactionScreen extends StatefulWidget {
 
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final TextEditingController _amountCtrlr = TextEditingController(text: "0");
+  final FocusNode _amountFocus = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _amountFocus.requestFocus();
+    _amountFocus.addListener(() {
+      debugPrint("amountFocus listener ${_amountFocus.hasFocus}");
+      setState(() {});
+    });
+  }
 
   @override
   void dispose() {
     _amountCtrlr.dispose();
+    _amountFocus.dispose();
     super.dispose();
   }
 
@@ -34,57 +46,112 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       body: Column(
         children: [
           Flexible(
-            child: Padding(
-              padding: AppPaddings.large,
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: AppPaddings.hMedium,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: AppColors.neutral900,
-                          ),
-                          borderRadius: AppBorderRadiuses.small,
-                        ),
-                        child: const Text("IDR"),
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: AppPaddings.large,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _amountCtrlr,
+                      focusNode: _amountFocus,
+                      enableInteractiveSelection: false,
+                      keyboardType: TextInputType.none,
+                      style: const TextStyle(
+                        color: AppColors.primary500,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Gap.hLarge,
-                      Expanded(
-                        child: TextFormField(
-                          controller: _amountCtrlr,
-                          style: const TextStyle(
+                      decoration: const InputDecoration(
+                        prefixIcon: Icon(
+                          Icons.monetization_on_outlined,
+                          color: AppColors.primary500,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
                             color: AppColors.primary500,
-                            fontSize: 32,
+                            width: 2,
                           ),
-                          decoration: const InputDecoration(
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.primary500,
-                                width: 2,
-                              ),
-                            ),
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(
-                                color: AppColors.primary500,
-                                width: 2,
-                              ),
-                            ),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary500,
+                            width: 2,
                           ),
-                          readOnly: true,
                         ),
                       ),
-                    ],
-                  ),
-                  Gap.vLarge,
-                ],
+                    ),
+                    Gap.vLarge,
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: "Pilih Kategori",
+                        prefixIcon: Icon(Icons.category_outlined),
+                      ),
+                    ),
+                    Gap.vLarge,
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: "Keterangan",
+                        prefixIcon: Icon(
+                          Icons.note_outlined,
+                        ),
+                      ),
+                    ),
+                    Gap.vLarge,
+                    const TextField(
+                      decoration: InputDecoration(
+                        hintText: "Tanggal",
+                        prefixIcon: Icon(
+                          Icons.calendar_month_outlined,
+                        ),
+                      ),
+                    ),
+                    Gap.vLarge,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.primary100.withOpacity(0.5),
+                        borderRadius: AppBorderRadiuses.small,
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              decoration: const BoxDecoration(
+                                border: Border(
+                                  right: BorderSide(),
+                                ),
+                              ),
+                              child: InkWell(
+                                onTap: () {},
+                                child: const Padding(
+                                  padding: AppPaddings.vMedium,
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {},
+                              child: const Padding(
+                                padding: AppPaddings.vMedium,
+                                child: Icon(
+                                  Icons.image_outlined,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),
           Container(
             padding: AppPaddings.large,
-            color: AppColors.neutral100,
             child: ElevatedButton(
               onPressed: () {
                 FocusScope.of(context).unfocus();
@@ -107,7 +174,11 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               ),
             ),
           ),
-          const Calculator(),
+          if (_amountFocus.hasFocus)
+            Calculator(
+              controller: _amountCtrlr,
+              onValueChanged: (amount) {},
+            ),
         ],
       ),
     );
