@@ -12,7 +12,13 @@ class AddTransactionScreen extends StatefulWidget {
 
 class _AddTransactionScreenState extends State<AddTransactionScreen> {
   final TextEditingController _amountCtrlr = TextEditingController(text: "0");
+  final TextEditingController _categoryCtrlr = TextEditingController();
+  final TextEditingController _dateCtrlr = TextEditingController();
+
   final FocusNode _amountFocus = FocusNode();
+
+  TransactionCategory? transactionCategory;
+  DateTime dateTime = DateTime.now();
 
   @override
   void initState() {
@@ -22,12 +28,16 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       debugPrint("amountFocus listener ${_amountFocus.hasFocus}");
       setState(() {});
     });
+
+    _dateCtrlr.text = dateTime.toString();
   }
 
   @override
   void dispose() {
     _amountCtrlr.dispose();
     _amountFocus.dispose();
+    _categoryCtrlr.dispose();
+    _dateCtrlr.dispose();
     super.dispose();
   }
 
@@ -81,25 +91,84 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       ),
                     ),
                     Gap.vLarge,
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _categoryCtrlr,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SelectCategoryScreen(
+                              currentCategory: transactionCategory,
+                              onSelectedCategory: (category) {
+                                setState(() {
+                                  transactionCategory = category;
+                                  _categoryCtrlr.text = category.name;
+                                });
+                              },
+                            ),
+                          ),
+                        );
+                      },
+                      readOnly: true,
+                      decoration: const InputDecoration(
                         hintText: "Pilih Kategori",
+                        hintStyle: TextStyle(
+                          color: AppColors.neutral200,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.neutral400,
+                          ),
+                        ),
                         prefixIcon: Icon(Icons.category_outlined),
                       ),
                     ),
                     Gap.vLarge,
                     const TextField(
+                      maxLength: 150,
+                      maxLines: 5,
+                      minLines: 1,
                       decoration: InputDecoration(
                         hintText: "Keterangan",
+                        hintStyle: TextStyle(
+                          color: AppColors.neutral200,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.primary500,
+                          ),
+                        ),
                         prefixIcon: Icon(
                           Icons.note_outlined,
                         ),
                       ),
                     ),
                     Gap.vLarge,
-                    const TextField(
-                      decoration: InputDecoration(
+                    TextField(
+                      controller: _dateCtrlr,
+                      onTap: () {
+                        AppDateUtils.pickDate(
+                          context,
+                          initialDate: dateTime,
+                          onSelectedDate: (selectedDate) {
+                            setState(() {
+                              dateTime = selectedDate;
+                              _dateCtrlr.text = selectedDate.toString();
+                            });
+                          },
+                        );
+                      },
+                      readOnly: true,
+                      decoration: const InputDecoration(
                         hintText: "Tanggal",
+                        hintStyle: TextStyle(
+                          color: AppColors.neutral200,
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: AppColors.neutral400,
+                          ),
+                        ),
                         prefixIcon: Icon(
                           Icons.calendar_month_outlined,
                         ),
