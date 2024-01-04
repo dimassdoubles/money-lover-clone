@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 
 abstract class TransactionRemoteRepo {
@@ -10,4 +9,6 @@ abstract class TransactionRemoteRepo {
     String? description,
     File? image,
   });
+
+  Future<List<Transaction>> getTransactionList();
 }

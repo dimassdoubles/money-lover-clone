@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:money_lover_clone/features/common/common.dart';
+import 'package:money_lover_clone/features/transaction/transaction.dart';
 
 abstract class TransactionState extends Equatable {}
 
@@ -24,8 +25,14 @@ class Error extends TransactionState {
 }
 
 class Success extends TransactionState {
-  Success();
+  final List<Transaction>? transactionList;
+
+  Success({
+    this.transactionList,
+  });
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        transactionList,
+      ];
 }

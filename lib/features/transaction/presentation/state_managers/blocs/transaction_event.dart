@@ -19,3 +19,5 @@ class AddTransaction extends TransactionEvent {
     required this.image,
   });
 }
+
+class GetTransactionList extends TransactionEvent {}

@@ -43,8 +43,9 @@ class FirebaseTransactionService implements TransactionService {
   }
 
   @override
-  Future<(List<Transaction>?, Failure?)> getTransactionList() {
-    // TODO: implement getTransactionList
-    throw UnimplementedError();
+  Future<(List<Transaction>?, Failure?)> getTransactionList() async {
+    return ServiceUtils.handleFailure(() async {
+      return _remoteRepo.getTransactionList();
+    });
   }
 }

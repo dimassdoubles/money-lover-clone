@@ -5,11 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
-import 'package:money_lover_clone/features/transaction/data/repositories/remote/transaction_remote_repo.dart';
-import 'package:money_lover_clone/features/transaction/domain/models/transaction_category.dart';
+import 'package:money_lover_clone/features/transaction/transaction.dart'
+    as app_transaction;
 
-@LazySingleton(as: TransactionRemoteRepo)
-class FirebaseRemoteRepo implements TransactionRemoteRepo {
+@LazySingleton(as: app_transaction.TransactionRemoteRepo)
+class FirebaseRemoteRepo implements app_transaction.TransactionRemoteRepo {
   static const collectionName = "transactions";
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -18,7 +18,7 @@ class FirebaseRemoteRepo implements TransactionRemoteRepo {
   @override
   Future<void> addTransaction({
     required int amount,
-    required TransactionCategory category,
+    required app_transaction.TransactionCategory category,
     required DateTime dateTime,
     String? description,
     File? image,
@@ -69,6 +69,33 @@ class FirebaseRemoteRepo implements TransactionRemoteRepo {
       }
 
       rethrow;
+    } catch (e) {
+      debugPrint("$e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<List<app_transaction.Transaction>> getTransactionList() async {
+    try {
+      CollectionReference transactions = _firestore.collection(collectionName);
+      final data = await transactions
+          .where(
+            "userId",
+            isEqualTo: _auth.currentUser!.uid,
+          )
+          .get();
+
+      final List<app_transaction.Transaction> result = [];
+      for (QueryDocumentSnapshot documentSnapshot in data.docs) {
+        // Access data using documentSnapshot.data()
+        final data = documentSnapshot.data() as Map<String, dynamic>;
+
+        debugPrint("$data");
+        result.add(app_transaction.TransactionMapper.fromJson(
+            documentSnapshot.id, data));
+      }
+      return result;
     } catch (e) {
       debugPrint("$e");
       rethrow;

@@ -9,6 +9,23 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc(TransactionService service)
       : _service = service,
         super(Initial()) {
+    on<GetTransactionList>(
+      (event, emit) async {
+        emit(Loading());
+
+        final (result, err) = await _service.getTransactionList();
+
+        if (err != null) {
+          ShowUtils.showError(err.message);
+          emit(Error(err));
+        } else {
+          emit(Success(
+            transactionList: result,
+          ));
+        }
+      },
+    );
+
     on<AddTransaction>(
       (event, emit) async {
         ShowUtils.showLoading();
