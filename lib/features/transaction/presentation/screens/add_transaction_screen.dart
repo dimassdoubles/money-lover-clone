@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:money_lover_clone/features/common/common.dart';
@@ -19,6 +21,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
   TransactionCategory? transactionCategory;
   DateTime dateTime = DateTime.now();
+  File? imageFile;
 
   @override
   void initState() {
@@ -175,6 +178,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                       ),
                     ),
                     Gap.vLarge,
+                    if (imageFile != null) Image.file(imageFile!),
                     Container(
                       decoration: BoxDecoration(
                         color: AppColors.primary100.withOpacity(0.5),
@@ -190,7 +194,16 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                                 ),
                               ),
                               child: InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  ImageUtils.pickImage(
+                                    context,
+                                    onSelectedImage: (selectedImage) {
+                                      setState(() {
+                                        imageFile = File(selectedImage!.path);
+                                      });
+                                    },
+                                  );
+                                },
                                 child: const Padding(
                                   padding: AppPaddings.vMedium,
                                   child: Icon(
@@ -202,7 +215,17 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           ),
                           Expanded(
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                ImageUtils.pickImage(
+                                  context,
+                                  openCamera: false,
+                                  onSelectedImage: (selectedImage) {
+                                    setState(() {
+                                      imageFile = File(selectedImage!.path);
+                                    });
+                                  },
+                                );
+                              },
                               child: const Padding(
                                 padding: AppPaddings.vMedium,
                                 child: Icon(

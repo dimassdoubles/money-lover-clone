@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // ignore: unused_import
 import 'package:money_lover_clone/features/auth/auth.dart' as auth;
@@ -13,9 +14,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder: (context, child) {
-        return const MaterialApp(
+        return MaterialApp(
           debugShowCheckedModeBanner: false,
-          home: AddTransactionScreen(),
+          home: const AddTransactionScreen(),
+          builder: EasyLoading.init(),
         );
       },
     );
