@@ -2,7 +2,6 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:money_lover_clone/features/common/common.dart';
-import 'package:money_lover_clone/features/transaction/presentation/state_managers/cubits/transaction_list_cubit.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 import 'package:money_lover_clone/service_locator/service_locator.dart';
 
@@ -12,9 +11,29 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
   TransactionBloc(TransactionService service)
       : _service = service,
         super(Initial()) {
+    on<Delete>(
+      (event, emit) async {
+        debugPrint("bloc delete");
+        ShowUtils.showLoading();
+        emit(Loading());
+
+        final (_, err) = await _service.delete(event.id);
+
+        if (err != null) {
+          ShowUtils.showError("Gagal menghapus transaksi");
+          emit(Error(err));
+        } else {
+          ShowUtils.showSuccess("Berhasil menghapus transaksi");
+          emit(Success());
+
+          add(GetTransactionList());
+        }
+      },
+    );
     on<EditTransaction>(
       (event, emit) async {
         debugPrint("Edit transaksi bloc dipanggil");
+        ShowUtils.showLoading();
         emit(Loading());
 
         debugPrint("sampai transaksi bloc");

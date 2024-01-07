@@ -20,4 +20,6 @@ abstract class TransactionRemoteRepo {
     DateTime? dateTime,
     File? imageFile,
   });
+
+  Future<void> delete(String id);
 }

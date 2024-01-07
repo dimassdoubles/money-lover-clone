@@ -4,7 +4,10 @@ class ShowUtils {
   ShowUtils._();
 
   static void showLoading() {
-    EasyLoading.show(status: 'loading...');
+    EasyLoading.show(
+      status: 'loading...',
+      dismissOnTap: false,
+    );
   }
 
   static void dismissLoading() {

@@ -147,4 +147,14 @@ class FirebaseRemoteRepo implements app_transaction.TransactionRemoteRepo {
       rethrow;
     }
   }
+
+  @override
+  Future<void> delete(String id) async {
+    try {
+      await _firestore.collection(collectionName).doc(id).delete();
+    } catch (e) {
+      debugPrint("repo gagal delete");
+      rethrow;
+    }
+  }
 }

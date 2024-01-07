@@ -39,3 +39,8 @@ class EditTransaction extends TransactionEvent {
     this.imageFile,
   });
 }
+
+class Delete extends TransactionEvent {
+  final String id;
+  Delete(this.id);
+}

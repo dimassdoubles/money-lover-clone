@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_lover_clone/features/common/common.dart';
-import 'package:money_lover_clone/features/transaction/presentation/screens/edit_transaction_screen.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 
 class DetailTransactionScreen extends StatelessWidget {
@@ -111,24 +110,7 @@ class DetailTransactionScreen extends StatelessWidget {
             ),
           ),
           Gap.vLarge,
-          InkWell(
-            onTap: () {},
-            child: Container(
-              padding: AppPaddings.large,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-              ),
-              child: const Center(
-                child: Text(
-                  "Hapus transaksi",
-                  style: TextStyle(
-                    color: AppColors.error500,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          DeleteTransactionButton(transaction: _transaction),
         ],
       ),
     );

@@ -22,4 +22,6 @@ abstract class TransactionService {
     DateTime? dateTime,
     File? imageFile,
   });
+
+  Future<(void, Failure?)> delete(String id);
 }

@@ -58,4 +58,12 @@ class FirebaseTransactionService implements TransactionService {
       return _remoteRepo.getTransactionList();
     });
   }
+
+  @override
+  Future<(void, Failure?)> delete(String id) {
+    debugPrint("sampai service");
+    return ServiceUtils.handleFailure(() async {
+      return _remoteRepo.delete(id);
+    });
+  }
 }
