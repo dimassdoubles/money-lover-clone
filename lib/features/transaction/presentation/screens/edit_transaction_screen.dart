@@ -202,6 +202,9 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                       ),
                     ),
                     Gap.vLarge,
+                    if (imageFile == null &&
+                        widget._transaction.image!.isNotEmpty)
+                      Image.network(widget._transaction.image!),
                     if (imageFile != null) Image.file(imageFile!),
                     Container(
                       decoration: BoxDecoration(
