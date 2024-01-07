@@ -11,4 +11,13 @@ abstract class TransactionRemoteRepo {
   });
 
   Future<List<Transaction>> getTransactionList();
+
+  Future<void> editTransaction({
+    required String id,
+    int? amount,
+    TransactionCategory? category,
+    String? description,
+    DateTime? dateTime,
+    File? imageFile,
+  });
 }

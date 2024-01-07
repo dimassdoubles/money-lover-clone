@@ -28,20 +28,7 @@ class FirebaseRemoteRepo implements app_transaction.TransactionRemoteRepo {
       String epochString = now.millisecondsSinceEpoch.toString();
       final String id =
           "TRX${now.year}${now.month.toString().padRight(2, '0')}${now.day.toString().padRight(2, '0')}-${epochString.substring(epochString.length - 4)}";
-      String downloadUrl = "";
-
-      if (image != null) {
-        String uniqueFilename =
-            DateTime.now().millisecondsSinceEpoch.toString();
-
-        Reference dirUpload =
-            _storage.ref().child('upload/${_auth.currentUser!.uid}');
-        Reference storedDir = dirUpload.child(uniqueFilename);
-
-        await storedDir.putFile(image);
-
-        downloadUrl = await storedDir.getDownloadURL();
-      }
+      String downloadUrl = await _upload(image);
 
       CollectionReference transactions = _firestore.collection(collectionName);
       transactions
@@ -75,6 +62,22 @@ class FirebaseRemoteRepo implements app_transaction.TransactionRemoteRepo {
     }
   }
 
+  Future<String> _upload(File? image) async {
+    String downloadUrl = "";
+    if (image != null) {
+      String uniqueFilename = DateTime.now().millisecondsSinceEpoch.toString();
+
+      Reference dirUpload =
+          _storage.ref().child('upload/${_auth.currentUser!.uid}');
+      Reference storedDir = dirUpload.child(uniqueFilename);
+
+      await storedDir.putFile(image);
+
+      downloadUrl = await storedDir.getDownloadURL();
+    }
+    return downloadUrl;
+  }
+
   @override
   Future<List<app_transaction.Transaction>> getTransactionList() async {
     try {
@@ -96,6 +99,49 @@ class FirebaseRemoteRepo implements app_transaction.TransactionRemoteRepo {
             documentSnapshot.id, data));
       }
       return result;
+    } catch (e) {
+      debugPrint("$e");
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> editTransaction({
+    required String id,
+    int? amount,
+    app_transaction.TransactionCategory? category,
+    String? description,
+    DateTime? dateTime,
+    File? imageFile,
+  }) async {
+    String? imageUrl;
+
+    // upload gambar dulu jika ada edit gambar
+    if (imageFile != null) {
+      imageUrl = await _upload(imageFile);
+    }
+
+    try {
+      final parameters = {
+        "amount": amount,
+        "categoryIconPath": category?.iconPath,
+        "categoryName": category?.name,
+        "categoryType": category?.type.name,
+        "dateTime": dateTime?.toString(),
+        "description": description,
+        "image": imageUrl,
+      };
+
+      DocumentReference transactionRef =
+          _firestore.collection(collectionName).doc(id);
+
+      await transactionRef.update(
+        Map.fromEntries(
+          parameters.entries.where(
+            (element) => element.value != null,
+          ),
+        ),
+      );
     } catch (e) {
       debugPrint("$e");
       rethrow;

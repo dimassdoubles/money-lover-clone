@@ -21,3 +21,21 @@ class AddTransaction extends TransactionEvent {
 }
 
 class GetTransactionList extends TransactionEvent {}
+
+class EditTransaction extends TransactionEvent {
+  final String id;
+  final int? amount;
+  final TransactionCategory? category;
+  final String? description;
+  final DateTime? dateTime;
+  final File? imageFile;
+
+  EditTransaction({
+    required this.id,
+    this.amount,
+    this.category,
+    this.description,
+    this.dateTime,
+    this.imageFile,
+  });
+}

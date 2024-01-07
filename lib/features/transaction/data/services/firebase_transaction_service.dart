@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:money_lover_clone/features/common/common.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
@@ -38,8 +39,17 @@ class FirebaseTransactionService implements TransactionService {
       String? description,
       DateTime? dateTime,
       File? imageFile}) {
-    // TODO: implement editTransaction
-    throw UnimplementedError();
+    return ServiceUtils.handleFailure(() async {
+      debugPrint("service ${category?.name}");
+      return _remoteRepo.editTransaction(
+        id: id,
+        amount: amount,
+        category: category,
+        dateTime: dateTime,
+        description: description,
+        imageFile: imageFile,
+      );
+    });
   }
 
   @override

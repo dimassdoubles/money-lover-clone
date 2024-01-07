@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_lover_clone/features/common/common.dart';
+import 'package:money_lover_clone/features/transaction/presentation/screens/edit_transaction_screen.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 
 class DetailTransactionScreen extends StatelessWidget {
@@ -17,7 +18,16 @@ class DetailTransactionScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         actions: [
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditTransactionScreen(
+                    transaction: _transaction,
+                  ),
+                ),
+              );
+            },
             child: const Text("Edit"),
           ),
         ],

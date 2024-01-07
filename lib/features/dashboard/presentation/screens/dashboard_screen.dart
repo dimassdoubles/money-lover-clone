@@ -17,6 +17,7 @@ class DashboardScreen extends StatefulWidget {
 
 class _DashboardScreenState extends State<DashboardScreen> {
   final _transactionBloc = getIt.get<transaction.TransactionBloc>();
+  final _transactionListCubit = getIt.get<transaction.TransactionListCubit>();
   final _userCubit = getIt.get<auth.AppUserCubit>();
 
   @override
@@ -27,7 +28,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _transactionBloc.add(transaction.GetTransactionList());
     return Scaffold(
       backgroundColor: AppColors.neutral100,
       floatingActionButton: FloatingActionButton(
@@ -51,129 +51,125 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
-        child: BlocBuilder<transaction.TransactionBloc,
-            transaction.TransactionState>(
-          bloc: _transactionBloc,
+        child: BlocBuilder<transaction.TransactionListCubit,
+            List<transaction.Transaction>>(
+          bloc: _transactionListCubit,
           builder: (context, state) {
-            if (state is transaction.Success) {
-              final saldoPlusList = state.transactionList!
-                  .where((element) =>
-                      element.category.type ==
-                      transaction.TransactionType.income)
-                  .map(
-                    (e) => e.amount,
-                  )
-                  .toList();
-              int saldoPlus = 0;
-              for (final amount in saldoPlusList) {
-                saldoPlus += amount;
-              }
-
-              final saldoMinusList = state.transactionList!
-                  .where((element) =>
-                      element.category.type ==
-                      transaction.TransactionType.expense)
-                  .map(
-                    (e) => e.amount,
-                  )
-                  .toList();
-
-              int saldoMinus = 0;
-              for (final amount in saldoMinusList) {
-                saldoMinus += amount;
-              }
-
-              return Padding(
-                padding: AppPaddings.large,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SafeArea(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text("Hallo,"),
-                                Text(
-                                  _userCubit.state!.name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginScreen(),
-                                ),
-                              );
-                            },
-                            icon: const Icon(
-                              Icons.logout,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Gap.vLarge,
-                    Container(
-                      width: 1.sw,
-                      padding: AppPaddings.medium,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary500,
-                        borderRadius: AppBorderRadiuses.medium,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Gap.vMedium,
-                          const Text(
-                            "Total saldo",
-                            style: TextStyle(
-                              color: AppColors.neutral100,
-                            ),
-                          ),
-                          Gap.vSmall,
-                          Text(
-                            "Rp ${saldoPlus - saldoMinus}",
-                            style: const TextStyle(
-                              color: AppColors.neutral100,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Gap.vMedium,
-                        ],
-                      ),
-                    ),
-                    Gap.vLarge,
-                    Gap.vLarge,
-                    const Text("Daftar transaksi"),
-                    Gap.vMedium,
-                    Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: AppBorderRadiuses.medium,
-                      ),
-                      child: Column(
-                        children: state.transactionList!
-                            .map((e) =>
-                                transaction.TransactionItem(transaction: e))
-                            .toList(),
-                      ),
-                    ),
-                  ],
-                ),
-              );
+            final saldoPlusList = state
+                .where((element) =>
+                    element.category.type == transaction.TransactionType.income)
+                .map(
+                  (e) => e.amount,
+                )
+                .toList();
+            int saldoPlus = 0;
+            for (final amount in saldoPlusList) {
+              saldoPlus += amount;
             }
-            return const SizedBox.shrink();
+
+            final saldoMinusList = state
+                .where((element) =>
+                    element.category.type ==
+                    transaction.TransactionType.expense)
+                .map(
+                  (e) => e.amount,
+                )
+                .toList();
+
+            int saldoMinus = 0;
+            for (final amount in saldoMinusList) {
+              saldoMinus += amount;
+            }
+
+            return Padding(
+              padding: AppPaddings.large,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SafeArea(
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text("Hallo,"),
+                              Text(
+                                _userCubit.state!.name,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LoginScreen(),
+                              ),
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.logout,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Gap.vLarge,
+                  Container(
+                    width: 1.sw,
+                    padding: AppPaddings.medium,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary500,
+                      borderRadius: AppBorderRadiuses.medium,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Gap.vMedium,
+                        const Text(
+                          "Total saldo",
+                          style: TextStyle(
+                            color: AppColors.neutral100,
+                          ),
+                        ),
+                        Gap.vSmall,
+                        Text(
+                          "Rp ${saldoPlus - saldoMinus}",
+                          style: const TextStyle(
+                            color: AppColors.neutral100,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Gap.vMedium,
+                      ],
+                    ),
+                  ),
+                  Gap.vLarge,
+                  Gap.vLarge,
+                  const Text("Daftar transaksi"),
+                  Gap.vMedium,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: AppBorderRadiuses.medium,
+                    ),
+                    child: Column(
+                      children: state
+                          .map((e) =>
+                              transaction.TransactionItem(transaction: e))
+                          .toList(),
+                    ),
+                  ),
+                ],
+              ),
+            );
           },
         ),
       ),
