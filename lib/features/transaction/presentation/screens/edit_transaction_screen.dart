@@ -34,7 +34,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
   @override
   void initState() {
     super.initState();
-    _amountCtrlr.text = widget._transaction.amount.toString();
+    _amountCtrlr.text = CurrencyUtils.toIdr(widget._transaction.amount);
     _categoryCtrlr.text = widget._transaction.category.name;
     _dateCtrlr.text = widget._transaction.dateTime.toString();
     _descCtrlr.text = widget._transaction.description!;
@@ -277,6 +277,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
           if (_amountFocus.hasFocus)
             Calculator(
               controller: _amountCtrlr,
+              initialAmount: amount,
               onValueChanged: (value) {
                 amount = value;
               },

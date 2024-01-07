@@ -15,12 +15,15 @@ enum _Operator {
 class Calculator extends StatefulWidget {
   final void Function(int amount)? _onValueChanged;
   final TextEditingController? _controller;
+  final int? _initialAmount;
   const Calculator({
     super.key,
     void Function(int amount)? onValueChanged,
     TextEditingController? controller,
+    int? initialAmount,
   })  : _onValueChanged = onValueChanged,
-        _controller = controller;
+        _controller = controller,
+        _initialAmount = initialAmount;
 
   @override
   State<Calculator> createState() => _CalculatorState();
@@ -30,6 +33,12 @@ class _CalculatorState extends State<Calculator> {
   _Operator? operator;
   int? number1;
   int? number2;
+
+  @override
+  void initState() {
+    super.initState();
+    number1 = widget._initialAmount;
+  }
 
   void _typingNumber(String number) {
     debugPrint("_typingNumber $number");
@@ -129,7 +138,8 @@ class _CalculatorState extends State<Calculator> {
 
   void _setDisplayText() {
     widget._controller?.text =
-        "${number1 ?? ""} ${operator?.symbol ?? ""} ${number2 ?? " "}".trim();
+        "${CurrencyUtils.toIdr(number1)} ${operator?.symbol ?? ""} ${CurrencyUtils.toIdr(number2)}"
+            .trim();
   }
 
   @override

@@ -140,7 +140,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         ),
                         Gap.vSmall,
                         Text(
-                          "Rp ${saldoPlus - saldoMinus}",
+                          "Rp ${CurrencyUtils.toIdr(saldoPlus - saldoMinus)}",
                           style: const TextStyle(
                             color: AppColors.neutral100,
                             fontSize: 24,

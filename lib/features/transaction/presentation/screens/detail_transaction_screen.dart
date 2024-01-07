@@ -72,7 +72,7 @@ class DetailTransactionScreen extends StatelessWidget {
                             child: Text(_transaction.description!),
                           ),
                         Text(
-                          "${_transaction.amount}",
+                          CurrencyUtils.toIdr(_transaction.amount),
                           style: TextStyle(
                             color: _transaction.category.type ==
                                     TransactionType.expense

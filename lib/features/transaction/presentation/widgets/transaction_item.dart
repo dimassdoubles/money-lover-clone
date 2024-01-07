@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_lover_clone/features/common/common.dart';
 import 'package:money_lover_clone/features/common/constants/app_colors.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 
@@ -26,7 +27,7 @@ class TransactionItem extends StatelessWidget {
         _transaction.dateTime.toString(),
       ),
       trailing: Text(
-        "${_transaction.amount}",
+        CurrencyUtils.toIdr(_transaction.amount),
         style: TextStyle(
           fontSize: 20,
           color: _transaction.category.type == TransactionType.expense

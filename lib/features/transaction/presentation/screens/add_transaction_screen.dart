@@ -263,6 +263,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           if (_amountFocus.hasFocus)
             Calculator(
               controller: _amountCtrlr,
+              initialAmount: amount,
               onValueChanged: (value) {
                 amount = value;
               },
