@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:money_lover_clone/features/common/common.dart';
-import 'package:money_lover_clone/features/common/constants/app_colors.dart';
 import 'package:money_lover_clone/features/transaction/transaction.dart';
 
 class TransactionItem extends StatelessWidget {
@@ -22,7 +21,12 @@ class TransactionItem extends StatelessWidget {
           ),
         );
       },
-      title: Text(_transaction.category.name),
+      title: Text(
+        _transaction.category.name,
+        style: const TextStyle(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
       subtitle: Text(
         AppDateUtils.displayDate(_transaction.dateTime),
       ),
