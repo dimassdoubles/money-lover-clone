@@ -36,7 +36,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       setState(() {});
     });
 
-    _dateCtrlr.text = dateTime.toString();
+    _dateCtrlr.text = AppDateUtils.displayDate(dateTime);
   }
 
   @override
@@ -166,7 +166,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           onSelectedDate: (selectedDate) {
                             setState(() {
                               dateTime = selectedDate;
-                              _dateCtrlr.text = selectedDate.toString();
+                              _dateCtrlr.text =
+                                  AppDateUtils.displayDate(selectedDate);
                             });
                           },
                         );

@@ -102,7 +102,7 @@ class DetailTransactionScreen extends StatelessWidget {
                       child: Icon(Icons.calendar_month),
                     ),
                     Text(
-                      _transaction.dateTime.toString(),
+                      AppDateUtils.displayDate(_transaction.dateTime),
                     ),
                   ],
                 ),

@@ -28,7 +28,7 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
 
   int? amount;
   TransactionCategory? transactionCategory;
-  late DateTime dateTime = widget._transaction.dateTime;
+  late DateTime dateTime;
   File? imageFile;
 
   @override
@@ -36,7 +36,8 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
     super.initState();
     _amountCtrlr.text = CurrencyUtils.toIdr(widget._transaction.amount);
     _categoryCtrlr.text = widget._transaction.category.name;
-    _dateCtrlr.text = widget._transaction.dateTime.toString();
+    _dateCtrlr.text = AppDateUtils.displayDate(widget._transaction.dateTime);
+    debugPrint("initState ${_dateCtrlr.text}");
     _descCtrlr.text = widget._transaction.description!;
 
     transactionCategory = widget._transaction.category;
@@ -48,8 +49,6 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
       debugPrint("amountFocus listener ${_amountFocus.hasFocus}");
       setState(() {});
     });
-
-    _dateCtrlr.text = dateTime.toString();
   }
 
   @override
@@ -177,9 +176,11 @@ class _EditTransactionScreenState extends State<EditTransactionScreen> {
                           context,
                           initialDate: dateTime,
                           onSelectedDate: (selectedDate) {
+                            debugPrint("hallo bray $selectedDate");
                             setState(() {
                               dateTime = selectedDate;
-                              _dateCtrlr.text = selectedDate.toString();
+                              _dateCtrlr.text =
+                                  AppDateUtils.displayDate(selectedDate);
                             });
                           },
                         );

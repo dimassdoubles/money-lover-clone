@@ -24,7 +24,7 @@ class TransactionItem extends StatelessWidget {
       },
       title: Text(_transaction.category.name),
       subtitle: Text(
-        _transaction.dateTime.toString(),
+        AppDateUtils.displayDate(_transaction.dateTime),
       ),
       trailing: Text(
         CurrencyUtils.toIdr(_transaction.amount),
