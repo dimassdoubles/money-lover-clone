@@ -12,6 +12,15 @@ class TransactionItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                DetailTransactionScreen(transaction: _transaction),
+          ),
+        );
+      },
       title: Text(_transaction.category.name),
       subtitle: Text(
         _transaction.dateTime.toString(),

@@ -27,6 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _transactionBloc.add(transaction.GetTransactionList());
     return Scaffold(
       backgroundColor: AppColors.neutral100,
       floatingActionButton: FloatingActionButton(
