@@ -51,9 +51,18 @@ class DetailTransactionScreen extends StatelessWidget {
             child: Column(
               children: [
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      width: 50,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 9,
+                      ),
+                      child: SizedBox(
+                        width: 32,
+                        child: Image.asset(
+                          _transaction.category.iconPath,
+                        ),
+                      ),
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

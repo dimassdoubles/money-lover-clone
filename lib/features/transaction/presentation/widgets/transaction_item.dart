@@ -21,6 +21,11 @@ class TransactionItem extends StatelessWidget {
           ),
         );
       },
+      leading: SizedBox(
+        width: 32,
+        height: 32,
+        child: Image.asset(_transaction.category.iconPath),
+      ),
       title: Text(
         _transaction.category.name,
         style: const TextStyle(

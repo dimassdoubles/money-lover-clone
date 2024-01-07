@@ -30,37 +30,37 @@ class TransactionCategory extends Equatable {
 List<TransactionCategory> _examples = [
   const TransactionCategory(
     name: "Gaji",
-    iconPath: "",
+    iconPath: "assets/icons/profits.png",
     type: TransactionType.income,
   ),
   const TransactionCategory(
     name: "Pemberian",
-    iconPath: "",
+    iconPath: "assets/icons/profits.png",
     type: TransactionType.income,
   ),
   const TransactionCategory(
     name: "Makan & minum",
-    iconPath: "",
+    iconPath: "assets/icons/spending.png",
     type: TransactionType.expense,
   ),
   const TransactionCategory(
     name: "Tagihan",
-    iconPath: "",
+    iconPath: "assets/icons/spending.png",
     type: TransactionType.expense,
   ),
   const TransactionCategory(
     name: "Transportasi",
-    iconPath: "",
+    iconPath: "assets/icons/spending.png",
     type: TransactionType.expense,
   ),
   const TransactionCategory(
     name: "Belanja",
-    iconPath: "",
+    iconPath: "assets/icons/spending.png",
     type: TransactionType.expense,
   ),
   const TransactionCategory(
     name: "Sedekah",
-    iconPath: "",
+    iconPath: "assets/icons/spending.png",
     type: TransactionType.expense,
   ),
 ];
