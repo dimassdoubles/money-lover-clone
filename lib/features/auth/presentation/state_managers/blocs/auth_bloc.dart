@@ -28,6 +28,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           debugPrint("Terjadi error");
         } else {
           debugPrint("Sukses registrasi");
+          final userCubit = getIt.get<AppUserCubit>();
+          userCubit.set(result!);
           emit(Success(appUser: result));
         }
       },
